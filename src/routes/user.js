@@ -1,9 +1,7 @@
-module.exports = (app, db) => {
-  app.get('/users', (req, res) => {
-    db.User.findAll()
-      .then((user) => res.json(user))
-  })
+const verifyToken = require('../auth/middleware/verifyToken');
 
-  app.post('/user', (req, res) => {
-  })
-}
+module.exports = (app, db) => {
+  app.get('/users', verifyToken, (req, res) => {
+    db.User.findAll().then((user) => res.json(user));
+  });
+};
