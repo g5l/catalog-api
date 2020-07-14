@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const logger = require('./logger/logger');
 require('dotenv').config()
 
 const app = express();
@@ -19,5 +20,5 @@ apiUser(app, db);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
-  console.log('listening on port 3030');
+  logger.info('listening on port 3030');
 });
