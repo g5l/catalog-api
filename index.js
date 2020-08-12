@@ -34,5 +34,5 @@ apiOrder(app, db);
 
 const { PORT } = process.env;
 app.listen(PORT, () => {
-  logger.info('listening on port 3030');
+  logger.info(`listening on port ${PORT}`);
 });
