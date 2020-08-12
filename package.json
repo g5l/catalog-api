@@ -9,7 +9,7 @@
     "dev": "nodemon index.js",
     "eslint": "eslint ./",
     "eslint-fix": "eslint ./ --fix",
-    "run:migrations": "node_modules/sequelize db:migrate",
+    "run:migrations": "node ./node_modules/sequelize-auto-migrations/bin/runmigration",
     "start": "NODE_ENV=production yarn run run:migrations && node ./index.js"
   },
   "dependencies": {
@@ -25,6 +25,7 @@
     "morgan": "^1.10.0",
     "mysql2": "^2.1.0",
     "sequelize": "^6.3.3",
+    "sequelize-auto-migrations": "^1.0.3",
     "sharp": "^0.25.4",
     "uuid": "^8.2.0"
   },
