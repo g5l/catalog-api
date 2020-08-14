@@ -9,6 +9,9 @@ module.exports = (app, db) => {
           model: db.OrderItem,
           include: [{
             model: db.Product,
+            include: [
+              { model: db.Image, as: 'image' },
+            ],
           }],
         },
         {
@@ -28,6 +31,9 @@ module.exports = (app, db) => {
           model: db.OrderItem,
           include: [{
             model: db.Product,
+            include: [
+              { model: db.Image, as: 'image' },
+            ],
           }],
         },
         {
