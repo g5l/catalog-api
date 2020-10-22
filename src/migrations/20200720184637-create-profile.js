@@ -18,7 +18,7 @@ module.exports = {
     background: {
       type: Sequelize.STRING,
     },
-    userId: {
+    companyId: {
       type: Sequelize.INTEGER,
     },
     createdAt: {

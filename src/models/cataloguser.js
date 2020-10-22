@@ -5,16 +5,16 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     image: DataTypes.STRING,
     password: DataTypes.STRING,
-    userId: {
+    companyId: {
       type: DataTypes.INTEGER,
-      references: 'Users',
+      references: 'Companies',
       referencesKey: 'id',
     },
   }, {
     paranoid: true,
   });
   CatalogUser.associate = (models) => {
-    CatalogUser.belongsTo(models.User);
+    CatalogUser.belongsTo(models.Company);
   };
   return CatalogUser;
 };

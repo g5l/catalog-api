@@ -4,10 +4,15 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     phone: DataTypes.STRING,
+    companyId: {
+      type: DataTypes.INTEGER,
+      references: 'Companies',
+      referencesKey: 'id',
+    },
   }, {});
   User.associate = (models) => {
+    User.belongsTo(models.Company);
     User.hasOne(models.Profile);
-    User.hasOne(models.Settings);
   };
   return User;
 };

@@ -4,14 +4,14 @@ module.exports = (sequelize, DataTypes) => {
     primaryColor: DataTypes.STRING,
     secondColor: DataTypes.STRING,
     background: DataTypes.STRING,
-    userId: {
+    companyId: {
       type: DataTypes.INTEGER,
-      references: 'Users',
+      references: 'Companies',
       referencesKey: 'id',
     },
   }, {});
   Profile.associate = (models) => {
-    Profile.belongsTo(models.User);
+    Profile.belongsTo(models.Company);
   };
   return Profile;
 };

@@ -2,7 +2,19 @@ const verifyToken = require('../auth/middleware/verifyToken');
 const FileUpload = require('../utils/FileUpload');
 
 module.exports = (app, db) => {
-  app.get('/products', (req, res) => {
+  app.get('/products', verifyToken, async (req, res) => {
+    const { userId } = req;
+
+    const company = await db.Company.findOne({
+      attributes: {
+        exclude: ['createdAt', 'updatedAt'],
+      },
+      include: [{
+        model: db.User,
+        where: { id: userId },
+      }],
+    });
+
     db.Product.findAll({
       include: [
         {
@@ -10,6 +22,7 @@ module.exports = (app, db) => {
           as: 'image',
         },
       ],
+      where: { companyId: company.id },
     })
       .then((result) => res.json(result));
   });
@@ -22,7 +35,9 @@ module.exports = (app, db) => {
   });
 
   app.post('/product', verifyToken, async (req, res) => {
-    const { name, reference, price } = req.body;
+    const {
+      name, reference, price, companyId,
+    } = req.body;
     const { image } = req.files;
 
     const upload = new FileUpload(image.data);
@@ -34,6 +49,7 @@ module.exports = (app, db) => {
       name,
       reference,
       price: priceFormated,
+      companyId,
       image: [
         { url: buffer },
       ],

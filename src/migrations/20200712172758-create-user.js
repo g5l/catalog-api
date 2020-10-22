@@ -18,6 +18,9 @@ module.exports = {
     phone: {
       type: Sequelize.STRING,
     },
+    companyId: {
+      type: Sequelize.INTEGER,
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

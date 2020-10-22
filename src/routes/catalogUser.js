@@ -6,11 +6,24 @@ const FileUpload = require('../utils/FileUpload');
 const config = require(`${__root}/config/auth`);
 
 module.exports = (app, db) => {
-  app.get('/catalogUsers', verifyToken, (req, res) => {
+  app.get('/catalogUsers', verifyToken, async (req, res) => {
+    const { userId } = req;
+
+    const company = await db.Company.findOne({
+      attributes: {
+        exclude: ['createdAt', 'updatedAt'],
+      },
+      include: [{
+        model: db.User,
+        where: { id: userId },
+      }],
+    });
+
     db.CatalogUser.findAll({
       attributes: {
         exclude: ['password'],
       },
+      where: { companyId: company.id },
     })
       .then((result) => res.json(result));
   });
@@ -33,6 +46,7 @@ module.exports = (app, db) => {
       lastname,
       email,
       password,
+      companyId,
     } = req.body;
     const { image } = req.files;
 
@@ -45,6 +59,7 @@ module.exports = (app, db) => {
       name,
       lastname,
       email,
+      companyId,
       password: hashedPassword,
       image: imageUrl,
     }).then((result) => res.json(result));

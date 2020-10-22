@@ -1,7 +1,19 @@
 const verifyToken = require('../auth/middleware/verifyToken');
 
 module.exports = (app, db) => {
-  app.get('/orders', (req, res) => {
+  app.get('/orders', verifyToken, async (req, res) => {
+    const { userId } = req;
+
+    const company = await db.Company.findOne({
+      attributes: {
+        exclude: ['createdAt', 'updatedAt'],
+      },
+      include: [{
+        model: db.User,
+        where: { id: userId },
+      }],
+    });
+
     db.Order.findAll({
       order: [['createdAt', 'DESC']],
       include: [
@@ -16,6 +28,7 @@ module.exports = (app, db) => {
         },
         {
           model: db.CatalogUser,
+          where: { companyId: company.id },
         },
       ],
     }).then((result) => res.json(result));

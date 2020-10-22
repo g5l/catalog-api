@@ -1,16 +1,19 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Settings', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Companies', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    catalogUserAuth: {
-      type: Sequelize.BOOLEAN,
+    name: {
+      type: Sequelize.STRING,
     },
-    userId: {
-      type: Sequelize.INTEGER,
+    slug: {
+      type: Sequelize.STRING,
+    },
+    logo: {
+      type: Sequelize.STRING,
     },
     createdAt: {
       allowNull: false,
@@ -21,5 +24,5 @@ module.exports = {
       type: Sequelize.DATE,
     },
   }),
-  down: (queryInterface) => queryInterface.dropTable('Settings'),
+  down: (queryInterface) => queryInterface.dropTable('Companies'),
 };

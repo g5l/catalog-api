@@ -8,13 +8,14 @@ function verifyToken(req, res, next) {
     return res.send({ auth: false, message: 'No token provided.' });
   }
 
-  jwt.verify(token, config.secret, (err, decoded) => {
+  jwt.verify(token, config.secret, async (err, decoded) => {
     if (err) {
       // res.status(500).send
       return res.send({ auth: false, message: 'Failed to authenticate token.' });
     }
 
     req.userId = decoded.id;
+
     next();
   });
 }

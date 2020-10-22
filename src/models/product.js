@@ -3,10 +3,16 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     reference: DataTypes.STRING,
     price: DataTypes.DECIMAL,
+    companyId: {
+      type: DataTypes.INTEGER,
+      references: 'Companies',
+      referencesKey: 'id',
+    },
   }, {
     paranoid: true,
   });
   Product.associate = (models) => {
+    Product.belongsTo(models.Company);
     Product.hasMany(models.Image, { as: 'image' });
     Product.belongsToMany(models.Order, {
       through: 'OrderItem',

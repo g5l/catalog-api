@@ -34,11 +34,13 @@ const apiAuth = require('./src/auth');
 const apiCatalogUser = require('./src/routes/catalogUser');
 const apiProduct = require('./src/routes/product');
 const apiOrder = require('./src/routes/order');
+const apiCompany = require('./src/routes/company');
 
 apiAuth(app, db);
 apiCatalogUser(app, db);
 apiProduct(app, db);
 apiOrder(app, db);
+apiCompany(app, db);
 
 const { PORT } = process.env;
 app.listen(PORT, () => {
