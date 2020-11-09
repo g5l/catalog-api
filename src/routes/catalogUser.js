@@ -90,7 +90,7 @@ module.exports = (app, db) => {
   });
 
   app.post('/dashlogin', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, companySlug } = req.body;
 
     if (!email || !password) {
       return res.status(400).send('Usuário ou senha incorretos');
@@ -98,9 +98,22 @@ module.exports = (app, db) => {
 
     const user = await db.CatalogUser.findOne({
       where: { email },
+      include: {
+        model: db.Company,
+        where: { slug: companySlug },
+        required: true,
+      },
     });
 
     if (!user) return res.status(404).send('No user found.');
+
+    const userData = {
+      id: user.id,
+      name: user.name,
+      lastname: user.lastname,
+      email: user.email,
+      image: user.image,
+    };
 
     const passwordIsValid = bcrypt.compareSync(password, user.password);
     if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
@@ -109,6 +122,6 @@ module.exports = (app, db) => {
       expiresIn: 2592000000, // 30 days
     });
 
-    res.status(200).send({ auth: true, token, user });
+    res.status(200).send({ auth: true, token, user: userData });
   });
 };

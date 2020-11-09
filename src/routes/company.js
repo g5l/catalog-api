@@ -15,6 +15,17 @@ module.exports = (app, db) => {
     }).then((result) => res.json(result));
   });
 
+  app.get('/company/:slug', (req, res) => {
+    const { slug } = req.params;
+
+    db.Company.findOne({
+      attributes: {
+        exclude: ['createdAt', 'updatedAt'],
+      },
+      where: { slug },
+    }).then((result) => res.json(result));
+  });
+
   app.post('/company', async (req, res) => {
     const { name, logo } = req.body;
 

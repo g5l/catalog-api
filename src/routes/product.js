@@ -6,9 +6,6 @@ module.exports = (app, db) => {
     const { userId } = req;
 
     const company = await db.Company.findOne({
-      attributes: {
-        exclude: ['createdAt', 'updatedAt'],
-      },
       include: [{
         model: db.User,
         where: { id: userId },
@@ -16,10 +13,30 @@ module.exports = (app, db) => {
     });
 
     db.Product.findAll({
+      attributes: {
+        exclude: ['deletedAt'],
+      },
+      where: { companyId: company.id },
+    })
+      .then((result) => res.json(result));
+  });
+
+  app.get('/products/:companySlug', async (req, res) => {
+    const { companySlug } = req.params;
+
+    const company = await db.Company.findOne({
+      where: { slug: companySlug },
+    });
+
+    db.Product.findAll({
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'deletedAt'],
+      },
       include: [
         {
           model: db.Image,
           as: 'image',
+          attributes: ['url'],
         },
       ],
       where: { companyId: company.id },
@@ -27,10 +44,30 @@ module.exports = (app, db) => {
       .then((result) => res.json(result));
   });
 
-  app.get('/product/:id', (req, res) => {
+  app.get('/product/:id', verifyToken, async (req, res) => {
+    const { userId } = req;
     const { id } = req.params;
 
-    db.Product.findOne({ where: { id } })
+    const company = await db.Company.findOne({
+      include: [{
+        model: db.User,
+        where: { id: userId },
+      }],
+    });
+
+    db.Product.findOne({
+      where: {
+        id,
+        companyId: company.id,
+      },
+      include: [
+        {
+          model: db.Image,
+          as: 'image',
+          attributes: ['url'],
+        },
+      ],
+    })
       .then((result) => res.json(result));
   });
 
