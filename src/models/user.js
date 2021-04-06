@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   User.associate = (models) => {
     User.belongsTo(models.Company);
-    User.hasOne(models.Profile);
   };
   return User;
 };

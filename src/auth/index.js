@@ -55,6 +55,7 @@ module.exports = (app, db) => {
       name: user.name,
       email: user.email,
       phone: user.phone,
+      company: user.Company,
     };
 
     res.status(200).send({ auth: true, user: userData });
